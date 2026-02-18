@@ -1,33 +1,75 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+# Speed Read
+
+A browser extension that lets you speed-read any article on the web. It extracts the main content from a page (stripping ads, navigation, etc.) and flashes words one at a time at a configurable speed.
+
+Built with [Plasmo](https://docs.plasmo.com/), React, TypeScript, and Tailwind CSS.
+
+## Features
+
+- Extracts article content using Mozilla's Readability (the same engine behind Firefox Reader View)
+- Configurable reading speed (100–1000 WPM)
+- Overlay controls: play/pause, reset, skip forward/back, and a live WPM slider
+- Progress bar and word position indicator
+- Works on Chrome (Manifest V3) and Firefox (Manifest V2)
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
 
 ```bash
-pnpm dev
-# or
+npm install
+```
+
+Run the development server:
+
+```bash
 npm run dev
 ```
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
+### Loading the extension
 
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
+**Chrome:**
+1. Go to `chrome://extensions`
+2. Enable "Developer mode"
+3. Click "Load unpacked" and select `build/chrome-mv3-dev`
 
-For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+**Firefox:**
+1. Go to `about:debugging#/runtime/this-firefox`
+2. Click "Load Temporary Add-on"
+3. Select any file inside `build/firefox-mv2-dev`
 
-## Making production build
+## Usage
 
-Run the following:
+1. Navigate to any article or webpage
+2. Click the Speed Read extension icon
+3. Adjust the WPM slider if desired
+4. Click "Start Reading" to open the overlay
+5. Press "Start" in the overlay to begin flashing words
 
-```bash
-pnpm build
-# or
-npm run build
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start Chrome dev server with hot reload |
+| `npm run dev:firefox` | Start Firefox dev server with hot reload |
+| `npm run build` | Production build for both Chrome and Firefox |
+| `npm run build:chrome` | Production build for Chrome only |
+| `npm run build:firefox` | Production build for Firefox only |
+| `npm run validate` | Run typecheck, lint, format check, and build |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Check Prettier formatting |
+
+## Project Structure
+
 ```
-
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
-
-## Submit to the webstores
-
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+├── popup.tsx              # Extension popup (toggle + WPM slider)
+├── contents/
+│   └── speed-reader.ts    # Content script (text extraction + overlay)
+├── assets/                # Extension icons
+├── style.css              # Tailwind CSS
+├── tailwind.config.js
+├── postcss.config.js
+├── eslint.config.mjs
+├── tsconfig.json
+└── package.json
+```
